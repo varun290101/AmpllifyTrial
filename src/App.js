@@ -1,6 +1,6 @@
-import logo from './logo.svg';
-import './App.css';
-import "@aws-amplify/ui-react/styles.css"
+import React from "react";
+import UserCreateForm from "./ui-components/UserCreateForm"; // Import the UserCreateForm component
+
 import {
   Button,
   Flex,
@@ -12,16 +12,26 @@ import {
   Image,
   Card,
 } from "@aws-amplify/ui-react";
+
 function App({ signOut }) {
   return (
     <View className="App">
-      
-        <Card>
-        <img src={logo} className="App-logo" alt="logo" />
+      <Card>
+        
         <Heading level={1}>We now have auth!</Heading>
-        </Card>
-       
-     <Button onClick={signOut}>Sign Out</Button>
+      </Card>
+      <UserCreateForm
+        // You can pass any props or callbacks needed by UserCreateForm here
+        onSuccess={(userData) => {
+          // Handle the successful creation of a user here
+          console.log("User created:", userData);
+        }}
+        onError={(userData, errorMessage) => {
+          // Handle the error here
+          console.error("Error creating user:", errorMessage);
+        }}
+      />
+      <Button onClick={signOut}>Sign Out</Button>
     </View>
   );
 }

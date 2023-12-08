@@ -1,0 +1,26 @@
+type Category @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Category: String!
+}
+
+type Interests @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Interest: String!
+  userID: ID! @index(name: "byUser")
+  Category: Category! @hasOne
+}
+
+enum Gender {
+  M
+  F
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  Name: String!
+  Age: Int!
+  Gender: Gender
+  County: String
+  UserInterests: [Interests] @hasMany(indexName: "byUser", fields: ["id"])
+}
+ 
