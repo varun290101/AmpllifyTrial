@@ -9,13 +9,13 @@ import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
-import { getCategory } from "../graphql/queries";
-import { updateCategory } from "../graphql/mutations";
+import { getInterest } from "../graphql/queries";
+import { updateInterest } from "../graphql/mutations";
 const client = generateClient();
-export default function CategoryUpdateForm(props) {
+export default function InterestUpdateForm(props) {
   const {
     id: idProp,
-    category: categoryModelProp,
+    interest: interestModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -25,35 +25,35 @@ export default function CategoryUpdateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    Category: "",
+    Interest: "",
   };
-  const [category, setCategory] = React.useState(initialValues.Category);
+  const [interest, setInterest] = React.useState(initialValues.Interest);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = categoryRecord
-      ? { ...initialValues, ...categoryRecord }
+    const cleanValues = interestRecord
+      ? { ...initialValues, ...interestRecord }
       : initialValues;
-    setCategory(cleanValues.Category);
+    setInterest(cleanValues.Interest);
     setErrors({});
   };
-  const [categoryRecord, setCategoryRecord] = React.useState(categoryModelProp);
+  const [interestRecord, setInterestRecord] = React.useState(interestModelProp);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
         ? (
             await client.graphql({
-              query: getCategory.replaceAll("__typename", ""),
+              query: getInterest.replaceAll("__typename", ""),
               variables: { id: idProp },
             })
-          )?.data?.getCategory
-        : categoryModelProp;
-      setCategoryRecord(record);
+          )?.data?.getInterest
+        : interestModelProp;
+      setInterestRecord(record);
     };
     queryData();
-  }, [idProp, categoryModelProp]);
-  React.useEffect(resetStateValues, [categoryRecord]);
+  }, [idProp, interestModelProp]);
+  React.useEffect(resetStateValues, [interestRecord]);
   const validations = {
-    Category: [{ type: "Required" }],
+    Interest: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -81,7 +81,7 @@ export default function CategoryUpdateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          Category: category,
+          Interest: interest,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -112,10 +112,10 @@ export default function CategoryUpdateForm(props) {
             }
           });
           await client.graphql({
-            query: updateCategory.replaceAll("__typename", ""),
+            query: updateInterest.replaceAll("__typename", ""),
             variables: {
               input: {
-                id: categoryRecord.id,
+                id: interestRecord.id,
                 ...modelFields,
               },
             },
@@ -130,32 +130,32 @@ export default function CategoryUpdateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "CategoryUpdateForm")}
+      {...getOverrideProps(overrides, "InterestUpdateForm")}
       {...rest}
     >
       <TextField
-        label="Category"
+        label="Interest"
         isRequired={true}
         isReadOnly={false}
-        value={category}
+        value={interest}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              Category: value,
+              Interest: value,
             };
             const result = onChange(modelFields);
-            value = result?.Category ?? value;
+            value = result?.Interest ?? value;
           }
-          if (errors.Category?.hasError) {
-            runValidationTasks("Category", value);
+          if (errors.Interest?.hasError) {
+            runValidationTasks("Interest", value);
           }
-          setCategory(value);
+          setInterest(value);
         }}
-        onBlur={() => runValidationTasks("Category", category)}
-        errorMessage={errors.Category?.errorMessage}
-        hasError={errors.Category?.hasError}
-        {...getOverrideProps(overrides, "Category")}
+        onBlur={() => runValidationTasks("Interest", interest)}
+        errorMessage={errors.Interest?.errorMessage}
+        hasError={errors.Interest?.hasError}
+        {...getOverrideProps(overrides, "Interest")}
       ></TextField>
       <Flex
         justifyContent="space-between"
@@ -168,7 +168,7 @@ export default function CategoryUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || categoryModelProp)}
+          isDisabled={!(idProp || interestModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -180,7 +180,7 @@ export default function CategoryUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || categoryModelProp) ||
+              !(idProp || interestModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

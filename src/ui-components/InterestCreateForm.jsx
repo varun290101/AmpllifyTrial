@@ -9,9 +9,9 @@ import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { generateClient } from "aws-amplify/api";
-import { createCategory } from "../graphql/mutations";
+import { createInterest } from "../graphql/mutations";
 const client = generateClient();
-export default function CategoryCreateForm(props) {
+export default function InterestCreateForm(props) {
   const {
     clearOnSuccess = true,
     onSuccess,
@@ -23,16 +23,16 @@ export default function CategoryCreateForm(props) {
     ...rest
   } = props;
   const initialValues = {
-    Category: "",
+    Interest: "",
   };
-  const [category, setCategory] = React.useState(initialValues.Category);
+  const [interest, setInterest] = React.useState(initialValues.Interest);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    setCategory(initialValues.Category);
+    setInterest(initialValues.Interest);
     setErrors({});
   };
   const validations = {
-    Category: [{ type: "Required" }],
+    Interest: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -60,7 +60,7 @@ export default function CategoryCreateForm(props) {
       onSubmit={async (event) => {
         event.preventDefault();
         let modelFields = {
-          Category: category,
+          Interest: interest,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -91,7 +91,7 @@ export default function CategoryCreateForm(props) {
             }
           });
           await client.graphql({
-            query: createCategory.replaceAll("__typename", ""),
+            query: createInterest.replaceAll("__typename", ""),
             variables: {
               input: {
                 ...modelFields,
@@ -111,32 +111,32 @@ export default function CategoryCreateForm(props) {
           }
         }
       }}
-      {...getOverrideProps(overrides, "CategoryCreateForm")}
+      {...getOverrideProps(overrides, "InterestCreateForm")}
       {...rest}
     >
       <TextField
-        label="Category"
+        label="Interest"
         isRequired={true}
         isReadOnly={false}
-        value={category}
+        value={interest}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
             const modelFields = {
-              Category: value,
+              Interest: value,
             };
             const result = onChange(modelFields);
-            value = result?.Category ?? value;
+            value = result?.Interest ?? value;
           }
-          if (errors.Category?.hasError) {
-            runValidationTasks("Category", value);
+          if (errors.Interest?.hasError) {
+            runValidationTasks("Interest", value);
           }
-          setCategory(value);
+          setInterest(value);
         }}
-        onBlur={() => runValidationTasks("Category", category)}
-        errorMessage={errors.Category?.errorMessage}
-        hasError={errors.Category?.hasError}
-        {...getOverrideProps(overrides, "Category")}
+        onBlur={() => runValidationTasks("Interest", interest)}
+        errorMessage={errors.Interest?.errorMessage}
+        hasError={errors.Interest?.hasError}
+        {...getOverrideProps(overrides, "Interest")}
       ></TextField>
       <Flex
         justifyContent="space-between"

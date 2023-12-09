@@ -1,106 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getCategory = /* GraphQL */ `
-  query GetCategory($id: ID!) {
-    getCategory(id: $id) {
-      id
-      Category
-      createdAt
-      updatedAt
-      __typename
-    }
-  }
-`;
-export const listCategories = /* GraphQL */ `
-  query ListCategories(
-    $filter: ModelCategoryFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listCategories(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        Category
-        createdAt
-        updatedAt
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const getInterests = /* GraphQL */ `
-  query GetInterests($id: ID!) {
-    getInterests(id: $id) {
-      id
-      Interest
-      userID
-      Category {
-        id
-        Category
-        createdAt
-        updatedAt
-        __typename
-      }
-      createdAt
-      updatedAt
-      interestsCategoryId
-      __typename
-    }
-  }
-`;
-export const listInterests = /* GraphQL */ `
-  query ListInterests(
-    $filter: ModelInterestsFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listInterests(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        Interest
-        userID
-        createdAt
-        updatedAt
-        interestsCategoryId
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
-export const interestsByUserID = /* GraphQL */ `
-  query InterestsByUserID(
-    $userID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelInterestsFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    interestsByUserID(
-      userID: $userID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        Interest
-        userID
-        createdAt
-        updatedAt
-        interestsCategoryId
-        __typename
-      }
-      nextToken
-      __typename
-    }
-  }
-`;
 export const getUser = /* GraphQL */ `
   query GetUser($id: ID!) {
     getUser(id: $id) {
@@ -109,16 +9,16 @@ export const getUser = /* GraphQL */ `
       Age
       Gender
       County
-      Interests {
-        nextToken
-        __typename
-      }
+      Email
+      Interests
       createdAt
       updatedAt
       __typename
     }
   }
 `;
+
+
 export const listUsers = /* GraphQL */ `
   query ListUsers(
     $filter: ModelUserFilterInput
@@ -132,11 +32,77 @@ export const listUsers = /* GraphQL */ `
         Age
         Gender
         County
+        Email
+        Interests
         createdAt
         updatedAt
         __typename
       }
       nextToken
+      __typename
+    }
+  }
+`;
+// Add this to your queries.js or a similar file
+export const SearchUsersByEmail = /* GraphQL */ `
+  query SearchUsersByEmail($email: String!) {
+    searchUsers(filter: { Email: { eq: $email } }) {
+      items {
+        id
+        Name
+        Age
+      }
+    }
+  }
+`;
+
+export const searchUsers = /* GraphQL */ `
+  query SearchUsers(
+    $filter: SearchableUserFilterInput
+    $sort: [SearchableUserSortInput]
+    $limit: Int
+    $nextToken: String
+    $from: Int
+    $aggregates: [SearchableUserAggregationInput]
+  ) {
+    searchUsers(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+      aggregates: $aggregates
+    ) {
+      items {
+        id
+        Name
+        Age
+        Gender
+        County
+        Email
+        Interests
+        createdAt
+        updatedAt
+        __typename
+      }
+      nextToken
+      total
+      aggregateItems {
+        name
+        result {
+          ... on SearchableAggregateScalarResult {
+            value
+          }
+          ... on SearchableAggregateBucketResult {
+            buckets {
+              key
+              doc_count
+              __typename
+            }
+          }
+        }
+        __typename
+      }
       __typename
     }
   }

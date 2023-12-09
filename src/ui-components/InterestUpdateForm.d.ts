@@ -21,25 +21,26 @@ export declare type ValidationResponse = {
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type CategoryCreateFormInputValues = {
-    Category?: string;
+export declare type InterestUpdateFormInputValues = {
+    Interest?: string;
 };
-export declare type CategoryCreateFormValidationValues = {
-    Category?: ValidationFunction<string>;
+export declare type InterestUpdateFormValidationValues = {
+    Interest?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type CategoryCreateFormOverridesProps = {
-    CategoryCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    Category?: PrimitiveOverrideProps<TextFieldProps>;
+export declare type InterestUpdateFormOverridesProps = {
+    InterestUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
+    Interest?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
-export declare type CategoryCreateFormProps = React.PropsWithChildren<{
-    overrides?: CategoryCreateFormOverridesProps | undefined | null;
+export declare type InterestUpdateFormProps = React.PropsWithChildren<{
+    overrides?: InterestUpdateFormOverridesProps | undefined | null;
 } & {
-    clearOnSuccess?: boolean;
-    onSubmit?: (fields: CategoryCreateFormInputValues) => CategoryCreateFormInputValues;
-    onSuccess?: (fields: CategoryCreateFormInputValues) => void;
-    onError?: (fields: CategoryCreateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: CategoryCreateFormInputValues) => CategoryCreateFormInputValues;
-    onValidate?: CategoryCreateFormValidationValues;
+    id?: string;
+    interest?: any;
+    onSubmit?: (fields: InterestUpdateFormInputValues) => InterestUpdateFormInputValues;
+    onSuccess?: (fields: InterestUpdateFormInputValues) => void;
+    onError?: (fields: InterestUpdateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: InterestUpdateFormInputValues) => InterestUpdateFormInputValues;
+    onValidate?: InterestUpdateFormValidationValues;
 } & React.CSSProperties>;
-export default function CategoryCreateForm(props: CategoryCreateFormProps): React.ReactElement;
+export default function InterestUpdateForm(props: InterestUpdateFormProps): React.ReactElement;

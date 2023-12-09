@@ -1,13 +1,7 @@
-type Category @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  Category: String!
-}
-
-type Interests @model @auth(rules: [{allow: public}]) {
-  id: ID!
-  Interest: String!
-  userID: ID! @index(name: "byUser")
-  Category: Category! @hasOne
+enum Interests {
+  ACTION_MOVIES
+  ACTION_TVSHOWS
+  ROM_COM_BOOKS
 }
 
 enum Gender {
@@ -15,12 +9,12 @@ enum Gender {
   F
 }
 
-type User @model @auth(rules: [{allow: public}]) {
+type User @model @searchable @auth(rules: [{allow: public}]) {
   id: ID!
   Name: String!
   Age: Int!
   Gender: Gender
   County: String
-  UserInterests: [Interests] @hasMany(indexName: "byUser", fields: ["id"])
+  Email: AWSEmail!
+  Interests: [Interests]
 }
- 
