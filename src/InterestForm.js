@@ -1,35 +1,30 @@
 import React, { useState } from 'react';
-import { Button, CheckboxField, View } from '@aws-amplify/ui-react';
+import { Button, View } from '@aws-amplify/ui-react';
 
 function InterestForm({ onSubmit }) {
-  const [interests, setInterests] = useState({
-    youtube: false,
-    games: false,
-    book: false,
-    music: false,
-    netflix: false
-  });
+  const [selectedInterest, setSelectedInterest] = useState('');
 
   const handleChange = (event) => {
-    setInterests({
-      ...interests,
-      [event.target.name]: event.target.checked
-    });
+    setSelectedInterest(event.target.value);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(interests);
+    sessionStorage.setItem('selectedInterest', selectedInterest); // Store the interest in session storage
+    onSubmit(selectedInterest);
   };
 
   return (
     <View>
       <form onSubmit={handleSubmit}>
-        <CheckboxField name="youtube" label="Watch YouTube" onChange={handleChange} />
-        <CheckboxField name="games" label="Play Games" onChange={handleChange} />
-        <CheckboxField name="book" label="Read a Book" onChange={handleChange} />
-        <CheckboxField name="music" label="Listen to Music" onChange={handleChange} />
-        <CheckboxField name="netflix" label="Watch Netflix" onChange={handleChange} />
+        <select value={selectedInterest} onChange={handleChange}>
+          <option value="">Select an Interest</option>
+          <option value="youtube">Watch YouTube</option>
+          <option value="games">Play Games</option>
+          <option value="book">Read a Book</option>
+          <option value="music">Listen to Music</option>
+          <option value="netflix">Watch Netflix</option>
+        </select>
         <Button type="submit">Submit</Button>
       </form>
     </View>

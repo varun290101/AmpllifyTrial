@@ -1,0 +1,20 @@
+enum Interests {
+  ACTION_MOVIES
+  ACTION_TVSHOWS
+  ROM_COM_BOOKS
+}
+
+enum Gender {
+  M
+  F
+}
+
+type User @model @searchable @auth(rules: [{allow: public}]) {
+  id: ID!
+  Name: String!
+  Age: Int!
+  Gender: Gender
+  County: String
+  Email: AWSEmail!
+  Interests: [Interests]
+}

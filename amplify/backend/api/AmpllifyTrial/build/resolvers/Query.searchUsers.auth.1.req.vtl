@@ -1,0 +1,25 @@
+## [Start] Authorization Steps. **
+$util.qr($ctx.stash.put("hasAuth", true))
+#set( $isAuthorized = false )
+#set( $totalFields = ["id","Name","Age","Gender","County","Email","Interests","createdAt","updatedAt"] )
+#set( $allowedAggFields = ["createdAt","updatedAt","id","Name","Age","Gender","County","Email","Interests"] )
+#if( $util.authType() == "API Key Authorization" )
+  #set( $isAuthorized = true )
+  #set( $allowedAggFields = $totalFields )
+#end
+#if( $util.authType() == "IAM Authorization" )
+  #foreach( $adminRole in $ctx.stash.adminRoles )
+    #if( $ctx.identity.userArn.contains($adminRole) && $ctx.identity.userArn != $ctx.stash.authRole && $ctx.identity.userArn != $ctx.stash.unauthRole )
+      #set( $allowedAggFields = $totalFields )
+      $util.qr($ctx.stash.put("allowedAggFields", $allowedAggFields))
+      #return($util.toJson({}))
+    #end
+  #end
+$util.unauthorized()
+#end
+$util.qr($ctx.stash.put("allowedAggFields", $allowedAggFields))
+#if( !$isAuthorized && $util.isNull($ctx.stash.authFilter) )
+$util.unauthorized()
+#end
+$util.toJson({"version":"2018-05-29","payload":{}})
+## [End] Authorization Steps. **
