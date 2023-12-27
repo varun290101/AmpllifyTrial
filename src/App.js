@@ -14,15 +14,7 @@ import {
 import { generateClient } from 'aws-amplify/api';
 import { SearchUsersByEmail } from './graphql/queries';
 
-const NavBar = ({ onSignOut, username }) => (
-  <div className="navbar">
-    <img src="/logo.png" alt="Logo" className="logo" />
-    <div>
-      <Button onClick={onSignOut} className="signout-button">Sign Out</Button>
-      <div className="welcome-message">Welcome back, {username}</div>
-    </div>
-  </div>
-);
+
 
 
 function App({ signOut, user }) {
@@ -32,10 +24,11 @@ function App({ signOut, user }) {
   const [showMusicForm, setShowMusicForm] = useState(true); // Music form is shown by default
   const [userMusicPreferences, setUserMusicPreferences] = useState(null);
   const [userExistenceChecked, setUserExistenceChecked] = useState(false);
+
   const client = generateClient();
-  
+  const logoUrl = "https://fucketlamda.s3.us-east-2.amazonaws.com/DALL%C2%B7E+2023-12-27+22.53.28+-+Modern+and+vibrant+logo+for+a+music-themed+app%2C+featuring+musical+notes+or+symbols%2C+colorful+and+suitable+for+a+digital+platform%2C+1024x1024.png"
   useEffect(() => {
-    
+
     const checkIfUserExists = async () => {
       if (userExistenceChecked) return;
 
@@ -75,11 +68,22 @@ function App({ signOut, user }) {
     setUserMusicPreferences(preferences);
     setShowMusicForm(false);
   };
-
+ 
+  const NavBar = ({ onSignOut, username }) => (
+    <div className="navbar">
+      <img src={logoUrl} alt="Logo" className="logo" />
+      <h1>Recommender</h1>
+      <div>
+        <Button onClick={onSignOut} className="signout-button">Sign Out</Button>
+        <div className="welcome-message">Welcome back, {username}</div>
+      </div>
+    </div>
+  );
   return (
     
     <View className="App">
       <NavBar onSignOut={signOut} username={user.username} />
+      
       <Card>
         <Heading level={1}>Welcome to the App!</Heading>
         {isCheckingUser ? (
